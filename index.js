@@ -1,3 +1,4 @@
+
 const config = require('config');
 const Joi = require("joi");
 const express = require("express");
@@ -13,6 +14,8 @@ console.log(`app:${app.get("env")}`);
 console.log('Applcation Name:'+ config.get("name"));
 console.log("Mail Server:" + config.get("mail.host"));
 
+app.set('view engine', 'hbs')
+app.set('views', './views');
 
 // Middleware
 app.use(express.json());
@@ -22,7 +25,7 @@ app.use(helmet());
 // app.use(logger);
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));
-  console.log("Morgan Enabled");
+ console.log("Morgan Enabled...");
 }
 
 const courses = [
