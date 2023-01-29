@@ -1,8 +1,9 @@
 
 const config = require("config");
 const express = require("express");
-const logger = require("./middleware/logger");
 const app = express();
+const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
 const genres = require("./routes/genres");
 const courses = require("./routes/courses");
 const home = require("./routes/home");
@@ -24,8 +25,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(helmet());
-app.use("/api/courses", courses);
+app.use("/api/movies", movies);
+app.use("/api/customers", customers);
 app.use("/api/genres", genres);
+app.use("/api/rental", rental);
 app.use("/", home);
 // app.use(logger);
 if (app.get("env") === "development") {
