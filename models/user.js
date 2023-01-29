@@ -33,7 +33,7 @@ const validateUser = (user) => {
     password: Joi.string().min(5).max(255).required(),
     email: Joi.string().min(5).max(50).required().email(),
   };
-  return Joi.validateUser(user,schema)
+  return Joi.validate(user, schema);
 };
-exports.User = User
-exports.validate = validateUser
+exports.User = User;
+exports.validate = validateUser;
