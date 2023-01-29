@@ -1,43 +1,22 @@
-
-const config = require("config");
-const express = require("express");
+const Joi = require('joi');
+Joi.objectId = require('joi-objectid')(Joi);
+const mongoose = require('mongoose');
+const genres = require('./routes/genres');
+const customers = require('./routes/customers');
+const movies = require('./routes/movies');
+const rentals = require('./routes/rentals');
+const express = require('express');
 const app = express();
-const Joi = require("joi");
-Joi.objectId = require("joi-objectid")(Joi);
-const genres = require("./routes/genres");
-const courses = require("./routes/courses");
-const home = require("./routes/home");
-const helmet = require("helmet");
-const morgan = require("morgan");
 
-console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
-console.log(`app:${app.get("env")}`);
+mongoose.connect('mongodb://localhost/vidly')
+  .then(() => console.log('Connected to MongoDB...'))
+  .catch(err => console.error('Could not connect to MongoDB...'));
 
-// CONFIGURATION
-console.log("Applcation Name:" + config.get("name"));
-console.log("Mail Server:" + config.get("mail.host"));
-
-app.set("view engine", "hbs");
-app.set("views", "./views");
-
-// Middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
-app.use(helmet());
-app.use("/api/movies", movies);
-app.use("/api/customers", customers);
-app.use("/api/genres", genres);
-app.use("/api/rental", rental);
-app.use("/", home);
-// app.use(logger);
-if (app.get("env") === "development") {
-  app.use(morgan("tiny"));
-  console.log("Morgan Enabled...");
-}
+app.use('/api/genres', genres);
+app.use('/api/customers', customers);
+app.use('/api/movies', movies);
+app.use('/api/rentals', rentals);
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`listening on port ${port}...`);
-});
-
+app.listen(port, () => console.log(`Listening on port ${port}...`));
